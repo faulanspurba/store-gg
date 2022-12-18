@@ -68,6 +68,9 @@ mongoose
       var host = server.address().address;
       var port = server.address().port;
       console.log(`App is running on port ${config.PORT}`, { host, port });
+      res.status(200).json({
+        Message: `App is running on port ${config.PORT}, ${(host, port)}`,
+      });
     });
   })
   .catch((err) => console.log(err));
