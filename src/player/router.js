@@ -14,7 +14,7 @@ const {
 } = require('./controller');
 
 router.get('/landingPage', landingPage);
-router.get('/detail/:id', getDetailPlayer);
+router.get('/detail/:_id', getDetailPlayer);
 router.get('/category', getCategory);
 router.post('/checkout', isAuth, checkoutAction);
 router.get('/history', isAuth, historyAction);

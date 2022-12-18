@@ -49,7 +49,10 @@ exports.getIdData = async (req, res) => {
     }
     return res.json({ Message: 'Berhasil Mendapatkan Data', data: nominal });
   } catch (err) {
-    console.log(err);
+    res.status(500).json({
+      Message: err.message || 'Internal Server Error',
+      field: err.field,
+    });
   }
 };
 
@@ -72,7 +75,10 @@ exports.updateDataNominal = async (req, res) => {
       data: nominal,
     });
   } catch (err) {
-    console.log(err);
+    res.status(500).json({
+      Message: err.message || 'Internal Server Error',
+      field: err.field,
+    });
   }
 };
 
@@ -86,6 +92,9 @@ exports.deleteDataNominal = async (req, res) => {
     }
     return res.json({ Message: 'Data Berhasil Dihapus', data: nominal });
   } catch (err) {
-    console.log(err);
+    res.status(500).json({
+      Message: err.message || 'Internal Server Error',
+      field: err.field,
+    });
   }
 };

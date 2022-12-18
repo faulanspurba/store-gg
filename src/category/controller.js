@@ -4,34 +4,25 @@ exports.getDataCategory = async (req, res) => {
   try {
     const categories = await Category.find();
 
-    // notif
-    const alertMessage = req.flash('alertMessage');
-    const alertStatus = req.flash('alertStatus');
-
-    const alert = { Message: alertMessage, status: alertStatus };
-
     if (!categories) {
       return res.json({ Message: 'Gagal mendapatkan data' });
     }
 
-    req.flash('Berhasil mendapatkan Kategory');
-    req.flash('Alert Status', 'success');
-
     res.json({
       Message: 'Berhasil mendapatkan data',
-      alert,
       data: categories,
     });
   } catch (err) {
-    req.flash('alertMessage', err.Message);
-    req.flash('alertStatus', err.status);
+    res.status(500).json({
+      Message: err.message || 'Internal Server Error',
+      field: err.field,
+    });
   }
 };
 
 exports.postDataCategory = async (req, res) => {
   try {
     const { categoryName } = req.body;
-    console.log(categoryName);
 
     // notif
     const alertMessage = req.flash('alertMessage');
@@ -65,7 +56,10 @@ exports.getIdData = async (req, res) => {
     }
     return res.json({ Message: 'Berhasil Mendapatkan Data', data: category });
   } catch (err) {
-    console.log(err);
+    res.status(500).json({
+      Message: err.message || 'Internal Server Error',
+      field: err.field,
+    });
   }
 };
 
@@ -85,7 +79,10 @@ exports.putDataCategory = async (req, res) => {
       data: category,
     });
   } catch (err) {
-    console.log(err);
+    res.status(500).json({
+      Message: err.message || 'Internal Server Error',
+      field: err.field,
+    });
   }
 };
 

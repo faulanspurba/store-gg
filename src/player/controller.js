@@ -25,10 +25,10 @@ exports.landingPage = async (req, res) => {
 };
 
 exports.getDetailPlayer = async (req, res) => {
-  const _id = req.body.id;
+  const { _id } = req.params;
 
   try {
-    const voucher = await Voucher.findOne({ _id })
+    const voucher = await Voucher.find({ _id })
       .populate('category')
       .populate('nominals')
       .populate('name', '_id name phoneNumber');

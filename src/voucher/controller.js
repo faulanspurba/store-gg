@@ -33,17 +33,69 @@ exports.getAllVoucher = async (req, res) => {
 };
 
 exports.postDataVoucher = async (req, res) => {
-  const { name, category } = req.body;
-  // const image = req.file.path;
-  console.log(req.file);
+  const { name, category, nominals } = req.body;
+  if (req.file) {
+    const image = req.file.path;
+  }
   try {
-    const voucher = new Voucher({ name });
+    const voucher = new Voucher({
+      name,
+      category,
+      nominals,
+      image: image ? image : '',
+    });
     await voucher.save();
     return res.status(201).json({
       message: 'Data created',
       data: voucher,
     });
   } catch (error) {
-    console.log(error.message);
+    res.status(500).json({
+      Message: err.message || 'Internal Server Error',
+      field: err.field,
+    });
+  }
+};
+
+exports.updateDataVoucher = async (req, res) => {
+  const { _id } = req.params;
+  const { name, category, nominals } = req.body;
+  if (req.file) {
+    const image = req.file.path;
+  }
+
+  try {
+    const voucher = await Voucher.findOneAndUpdate(
+      { _id },
+      { name, category, nominals, image }
+    );
+
+    res.status(201).json({
+      Message: 'Updating data voucher was success',
+      data: voucher,
+    });
+  } catch (err) {
+    res.status(500).json({
+      Message: err.message || 'Internal Server Error',
+      field: err.field,
+    });
+  }
+};
+
+exports.deleteDataVoucher = async (req, res) => {
+  const { _id } = req.params;
+
+  try {
+    const voucher = Voucher.findOneAndDelete({ _id });
+
+    res.status(200).json({
+      Message: 'Deleting data voucher was success',
+      data: voucher,
+    });
+  } catch (err) {
+    res.status(500).json({
+      Message: err.message || 'Internal Server Error',
+      field: err.field,
+    });
   }
 };
