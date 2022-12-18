@@ -1,11 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const session = require('express-session');
-const flash = require('connect-flash');
 const multer = require('multer');
-const configEnv = require('./config');
+const config = require('./config');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 //   MIDDLEWARE
 app.use(bodyParser.json());
@@ -63,12 +62,12 @@ app.use(`${API}/players`, playerRouter);
 app.use(`${API}/auth`, authRouter);
 
 mongoose
-  .connect(configEnv.MONGOOSE_URL_DB)
+  .connect(config.MONGOOSE_URL_DB)
   .then(() => {
-    const server = app.listen(configEnv.PORT, () => {
+    const server = app.listen(config.PORT, () => {
       var host = server.address().address;
       var port = server.address().port;
-      console.log(`App is running on port ${configEnv.PORT}`, { host, port });
+      console.log(`App is running on port ${config.PORT}`, { host, port });
     });
   })
   .catch((err) => console.log(err));
