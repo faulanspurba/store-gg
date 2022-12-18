@@ -65,8 +65,8 @@ mongoose
   .connect(config.MONGOOSE_URL_DB)
   .then(() => {
     const server = app.listen(config.PORT, () => {
-      var host = server.address().address;
-      var port = server.address().port;
+      const host = server.address().address;
+      const port = server.address().port;
       console.log(`App is running on port ${config.PORT}`, { host, port });
       res.status(200).json({
         Message: `App is running on port ${config.PORT}, ${(host, port)}`,
