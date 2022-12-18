@@ -61,6 +61,12 @@ const authRouter = require('./src/auth/router');
 app.use(`${API}/players`, playerRouter);
 app.use(`${API}/auth`, authRouter);
 
+app.use('/', (req, res) => {
+  res.status(200).json({
+    Message: `App is running on port ${config.PORT}`,
+  });
+});
+
 mongoose
   .connect(config.MONGOOSE_URL_DB)
   .then(() => {
@@ -68,9 +74,6 @@ mongoose
       const host = server.address().address;
       const port = server.address().port;
       console.log(`App is running on port ${config.PORT}`, { host, port });
-      res.status(200).json({
-        Message: `App is running on port ${config.PORT}, ${(host, port)}`,
-      });
     });
   })
   .catch((err) => console.log(err));
