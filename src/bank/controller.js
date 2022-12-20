@@ -5,8 +5,9 @@ module.exports = {
     try {
       const bank = await Bank.find();
 
-      res.render('admin/bank/view_bank', {
-        bank,
+      return res.status(200).json({
+        Message: 'Getting all data Bank success',
+        data: bank,
         name: req.session.user.name,
       });
     } catch (err) {

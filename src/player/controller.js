@@ -28,10 +28,10 @@ exports.getDetailPlayer = async (req, res) => {
   const { _id } = req.params;
 
   try {
-    const voucher = await Voucher.find({ _id })
+    const voucher = await Voucher.findOne({ _id })
       .populate('category')
       .populate('nominals')
-      .populate('name', '_id name phoneNumber');
+      .populate('user', '_id name phoneNumber');
 
     if (!voucher) {
       return res.status(404).json({
