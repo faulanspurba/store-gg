@@ -1,15 +1,20 @@
-var express = require('express');
-var router = express.Router();
-const { index, viewCreate, actionCreate, viewEdit, actionEdit, actionDelete } = require('./controller')
+var router = require('express').Router();
 
-const { isLoginAdmin } = require('../middleware/auth')
+const {
+  index,
+  actionCreate,
+  viewEdit,
+  actionEdit,
+  actionDelete,
+} = require('./controller');
 
-router.use(isLoginAdmin)
+const { isLoginAdmin } = require('../middleware/auth');
+
+// router.use(isLoginAdmin)
 router.get('/', index);
-router.get('/create', viewCreate);
 router.post('/create', actionCreate);
-router.get('/edit/:id', viewEdit);
-router.put('/edit/:id', actionEdit);
+router.get('/edit/:_id', viewEdit);
+router.put('/edit/:_id', actionEdit);
 router.delete('/delete/:id', actionDelete);
 
 module.exports = router;

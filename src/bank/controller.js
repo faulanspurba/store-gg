@@ -8,7 +8,7 @@ module.exports = {
       return res.status(200).json({
         Message: 'Getting all data Bank success',
         data: bank,
-        name: req.session.user.name,
+        // name: req.session.user.name,
       });
     } catch (err) {
       return res.status(500).json({
@@ -38,9 +38,9 @@ module.exports = {
 
   viewEdit: async (req, res) => {
     try {
-      const { id } = req.params;
+      const { _id } = req.params;
 
-      const bank = await Bank.findOne({ _id: id });
+      const bank = await Bank.findOne({ _id });
 
       res.status(200).json({
         data: bank,
@@ -55,12 +55,12 @@ module.exports = {
 
   actionEdit: async (req, res) => {
     try {
-      const { id } = req.params;
+      const { _id } = req.params;
       const { name, nameBank, noRekening } = req.body;
 
       await Bank.findOneAndUpdate(
         {
-          _id: id,
+          _id,
         },
         { name, nameBank, noRekening }
       );

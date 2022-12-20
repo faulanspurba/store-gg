@@ -4,7 +4,6 @@ const Payment = require('../payment/model');
 const Bank = require('../bank/model');
 const Nominal = require('../nominal/model');
 const Transaction = require('../transaction/model');
-const User = require('../users/model');
 const Player = require('../player/model');
 
 exports.landingPage = async (req, res) => {
@@ -33,6 +32,8 @@ exports.getDetailPlayer = async (req, res) => {
       .populate('nominals')
       .populate('user', '_id name phoneNumber');
 
+    const payment = await Payment.find().populate('banks');
+
     if (!voucher) {
       return res.status(404).json({
         Message: 'Your voucher is not found',
@@ -40,7 +41,7 @@ exports.getDetailPlayer = async (req, res) => {
     }
     return res.status(200).json({
       Message: 'Data voucher found!',
-      data: voucher,
+      data: { detail: voucher, payment },
     });
   } catch (err) {
     res.status(500).json({

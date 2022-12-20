@@ -12,7 +12,7 @@ let paymentSchema = mongoose.Schema(
       enum: ['Y', 'N'],
       default: 'Y',
     },
-    bankName: [
+    banks: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Bank',

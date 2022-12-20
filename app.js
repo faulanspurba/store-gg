@@ -45,12 +45,16 @@ const categoryRouter = require('./src/category/router');
 const nominalRouter = require('./src/nominal/router');
 const voucherRouter = require('./src/voucher/router');
 const userRouter = require('./src/users/router');
+const bankRouter = require('./src/bank/router');
+const paymentRouter = require('./src/payment/router');
 
 app.use('/dashboard', dashboardRouter);
 app.use('/category', categoryRouter);
 app.use('/nominal', nominalRouter);
 app.use('/voucher', voucherRouter);
 app.use('/user', userRouter);
+app.use('/bank', bankRouter);
+app.use('/payment', paymentRouter);
 
 const API = '/API/v1';
 

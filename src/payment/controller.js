@@ -1,144 +1,127 @@
-const Payment = require('./model')
-const Bank = require('../bank/model')
+const Payment = require('./model');
+const Bank = require('../bank/model');
 
 module.exports = {
   index: async (req, res) => {
     try {
-      const alertMessage = req.flash("alertMessage")
-      const alertStatus = req.flash("alertStatus")
+      const payment = await Payment.find().populate('banks');
 
-      const alert = { message: alertMessage, status: alertStatus }
-      const payment = await Payment.find().populate('banks')
-
-      res.render('admin/payment/view_payment', {
-        payment,
-        alert,
-        name: req.session.user.name,
-        title: 'Halaman metode pembayaran'
-      })
+      res.status(200).json({
+        Message: 'Getting payment data was success',
+        data: payment,
+        // name : req.session.user.name
+      });
     } catch (err) {
-      req.flash('alertMessage', `${err.message}`)
-      req.flash('alertStatus', 'danger')
-      res.redirect('/payment')
-
-    }
-  },
-  viewCreate: async (req, res) => {
-    try {
-      const banks = await Bank.find()
-      res.render('admin/payment/create', {
-        banks,
-        name: req.session.user.name,
-        title: 'Halaman tambah metode pembayaran'
-      })
-    } catch (err) {
-      req.flash('alertMessage', `${err.message}`)
-      req.flash('alertStatus', 'danger')
-      res.redirect('/payment')
+      res.status(500).json({
+        Message: err.message || 'Internal Server Error',
+        field: err.errors,
+      });
     }
   },
 
   actionCreate: async (req, res) => {
     try {
-      const { banks, type } = req.body
+      const { banks, type } = req.body;
 
-      let payment = await Payment({ banks, type })
-      await payment.save();
+      let payment = await Payment({ banks, type });
+      const data = await payment.save();
 
-      req.flash('alertMessage', "Berhasil tambah payment")
-      req.flash('alertStatus', "success")
-
-      res.redirect('/payment')
-
+      res.status(200).json({
+        Message: 'Creating data payment was success',
+        data,
+      });
     } catch (err) {
-      req.flash('alertMessage', `${err.message}`)
-      req.flash('alertStatus', 'danger')
-      res.redirect('/payment')
+      res.status(500).json({
+        Message: err.message || 'Internal Server Error',
+        field: err.errors,
+      });
     }
   },
 
   viewEdit: async (req, res) => {
     try {
-      const { id } = req.params
+      const { _id } = req.params;
 
-      const payment = await Payment.findOne({ _id: id }).populate('banks')
-      const banks = await Bank.find()
+      const payment = await Payment.findOne({ _id }).populate('banks');
+      const banks = await Bank.find();
 
-      res.render('admin/payment/edit', {
-        payment,
-        banks,
-        name: req.session.user.name,
-        title: 'Halaman ubah metode pembayaran'
-      })
-
+      res.status(200).json({
+        Message: 'Getting data  was success',
+        data: { banks, payment },
+        // name : req.session.user.name
+      });
     } catch (err) {
-      req.flash('alertMessage', `${err.message}`)
-      req.flash('alertStatus', 'danger')
-      res.redirect('/payment')
+      res.status(500).json({
+        Message: err.message || 'Internal Server Error',
+        field: err.errors,
+      });
     }
   },
 
   actionEdit: async (req, res) => {
     try {
-      const { id } = req.params;
-      const { banks, type } = req.body
+      const { _id } = req.params;
+      const { banks, type } = req.body;
 
-      await Payment.findOneAndUpdate({
-        _id: id
-      }, { banks, type });
+      const data = await Payment.findOneAndUpdate(
+        {
+          _id,
+        },
+        { banks, type }
+      );
 
-      req.flash('alertMessage', "Berhasil ubah payment")
-      req.flash('alertStatus', "success")
-
-      res.redirect('/payment')
-
+      res.status(201).json({
+        Message: 'Updating data was success',
+        data,
+      });
     } catch (err) {
-      req.flash('alertMessage', `${err.message}`)
-      req.flash('alertStatus', 'danger')
-      res.redirect('/payment')
+      res.status(500).json({
+        Message: err.message || 'Internal Server Error',
+        field: err.errors,
+      });
     }
   },
 
   actionDelete: async (req, res) => {
     try {
-      const { id } = req.params;
+      const { _id } = req.params;
 
       await Payment.findOneAndRemove({
-        _id: id
+        _id,
       });
 
-      req.flash('alertMessage', "Berhasil hapus payment")
-      req.flash('alertStatus', "success")
-
-      res.redirect('/payment')
-
+      res.status(200).json({
+        Message: 'Deleting data was success',
+      });
     } catch (err) {
-      req.flash('alertMessage', `${err.message}`)
-      req.flash('alertStatus', 'danger')
-      res.redirect('/payment')
+      res.status(500).json({
+        Message: err.message || 'Internal Server Error',
+        field: err.errors,
+      });
     }
   },
   actionStatus: async (req, res) => {
     try {
-      const { id } = req.params
-      let payment = await Payment.findOne({ _id: id })
+      const { _id } = req.params;
+      let payment = await Payment.findOne({ _id });
 
-      let status = payment.status === 'Y' ? 'N' : 'Y'
+      let status = payment.status === 'Y' ? 'N' : 'Y';
 
-      payment = await Payment.findOneAndUpdate({
-        _id: id
-      }, { status })
+      payment = await Payment.findOneAndUpdate(
+        {
+          _id,
+        },
+        { status }
+      );
 
-      req.flash('alertMessage', "Berhasil ubah status")
-      req.flash('alertStatus', "success")
-
-      res.redirect('/payment')
-
-
+      res.status(201).json({
+        Message: 'Updating data status was success',
+      });
     } catch (err) {
-      req.flash('alertMessage', `${err.message}`)
-      req.flash('alertStatus', 'danger')
-      res.redirect('/payment')
+      res.status(500).json({
+        Message: err.message || 'Internal Server Error',
+        field: err.errors,
+      });
     }
-  }
-}
+  },
+};
