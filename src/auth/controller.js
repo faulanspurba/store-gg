@@ -22,6 +22,7 @@ exports.signUp = async (req, res, next) => {
     return res.status(200).json({
       Message: 'Your email has been registered',
       data: payload.email,
+      error : true,
     });
   }
   try {
