@@ -19,7 +19,7 @@ exports.signUp = async (req, res, next) => {
   const checkEmail = await Player.findOne({ email: payload.email });
 
   if (checkEmail) {
-    return res.status(200).json({
+    return res.status(403).json({
       Message: 'Your email has been registered',
       data: payload.email,
       error : true,
