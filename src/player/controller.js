@@ -181,7 +181,7 @@ exports.historyDetail = async (req, res) => {
   try {
     const { _id } = req.params;
 
-    const detailTransaction = await Transaction.find({ _id });
+    const detailTransaction = await Transaction.findOne({ _id });
 
     if (detailTransaction.length <= 0) {
       return res.status(404).json({

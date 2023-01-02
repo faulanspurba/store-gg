@@ -96,6 +96,6 @@ exports.deleteDataCategory = async (req, res) => {
     }
     return res.json({ Message: 'Data Berhasil Dihapus', data: category });
   } catch (err) {
-    console.log(err);
+    res.status(500).json({ Message: 'Internal Server Error' });
   }
 };
